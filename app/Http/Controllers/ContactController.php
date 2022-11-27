@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
@@ -15,7 +16,7 @@ class ContactController extends Controller
     public function index()
     {
         $data = [
-            'contacts' => Contact::paginate(10)
+            'contacts' => Contact::where('user_id', '=', Auth::user()->id)->paginate(10)
         ];
 
         return view('contacts.index', $data);
@@ -42,8 +43,11 @@ class ContactController extends Controller
         $formData = $request->validate([
             'name' => 'required',
             'mobile' => 'required|unique:contacts',
+            'email' => 'nullable',
             'group' => 'nullable',
         ]);
+
+        $formData['user_id'] = auth()->id();
 
         if (Contact::create($formData)) {
             return redirect('/contacts')->with('message', 'Contact created Successfully');
@@ -59,6 +63,15 @@ class ContactController extends Controller
     public function show($id)
     {
         //
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+
+        $contacts = Contact::query('mobile', 'LIKE', '%{$search}%')->latest()->get();
+
+        return view('contacts.index', compact('contacts'));
     }
 
     /**
