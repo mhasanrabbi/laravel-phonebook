@@ -39,7 +39,15 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $formData = $request->validate([
+            'name' => 'required',
+            'mobile' => 'required|unique:contacts',
+            'group' => 'nullable',
+        ]);
+
+        if (Contact::create($formData)) {
+            return redirect('/contacts')->with('message', 'Contact created Successfully');
+        }
     }
 
     /**
