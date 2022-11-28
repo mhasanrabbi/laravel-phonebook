@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('contacts', ContactController::class);
 
-    Route::get('/contacts/search/', [ContactController::class, 'search'])->name('search.contact');
+    Route::get('/search', [ContactController::class, 'search'])->name('search');
 });
 
 require __DIR__ . '/auth.php';

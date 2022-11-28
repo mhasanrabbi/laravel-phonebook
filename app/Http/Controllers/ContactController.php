@@ -16,7 +16,7 @@ class ContactController extends Controller
     public function index()
     {
         $data = [
-            'contacts' => Contact::where('user_id', '=', Auth::user()->id)->paginate(10)
+            'contacts' => Contact::where('user_id', '=', Auth::user()->id)->latest()->filter(request(['search']))->paginate(10)
         ];
 
         return view('contacts.index', $data);
@@ -41,10 +41,14 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $formData = $request->validate([
-            'name' => 'required',
-            'mobile' => 'required|unique:contacts',
+            'name' => 'required|max:255',
+            'mobile' => 'required|unique:contacts|numeric',
             'email' => 'nullable',
             'group' => 'nullable',
+        ], [
+            'name.required' => "Name is required",
+            'mobile.required' => "Mobile number is required",
+            'mobile.unique' => "Mobile number already exists",
         ]);
 
         $formData['user_id'] = auth()->id();
@@ -67,11 +71,11 @@ class ContactController extends Controller
 
     public function search(Request $request)
     {
-        $search = $request->input('search');
-
-        $contacts = Contact::query('mobile', 'LIKE', '%{$search}%')->latest()->get();
-
-        return view('contacts.index', compact('contacts'));
+        if ($request->search) {
+            $searchContacts = Contact::where('mobile', 'LIKE', '%' . $request->search . '%')->latest()->paginate(10);
+            return view('contacts.index', compact('searchContacts'));
+        } else {
+        }
     }
 
     /**

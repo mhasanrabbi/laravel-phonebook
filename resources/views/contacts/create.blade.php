@@ -30,7 +30,7 @@
             <label class="block text-gray-700 text-sm font-bold mb-2" for="number">
               Mobile Number
             </label>
-            <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="number" type="text" placeholder="" name="mobile">
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" name="mobile" placeholder="Mobile Number">
             @error('mobile')
             <p class="text-red-500">
                 {{ $message }}
@@ -41,7 +41,7 @@
             <label class="block text-gray-700 text-sm font-bold mb-2" for="number">
               Email
             </label>
-            <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="number" type="text" placeholder="" name="email">
+            <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="number" type="text" placeholder="Email" name="email">
             @error('email')
             <p class="text-red-500">
                 {{ $message }}
@@ -52,7 +52,12 @@
             <label class="block text-gray-700 text-sm font-bold mb-2" name="group">
               Group
             </label>
-            <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="number" type="text" placeholder="Family, Colleague etc">
+            <select name="group" id="group"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg">
+                <option value="" selected >Selected</option>
+                <option value="family">Family</option>
+                <option value="friends">Friends</option>
+                <option value="colleagues">Colleagues</option>
+            </select>
             @error('group')
             <p class="text-red-500">
                 {{ $message }}
